@@ -3,7 +3,7 @@ Plugin Name: FAQ Block For Gutenberg
 Plugin URI: https://wordpress.org/plugins/faq-block-for-gutenberg/
 Author: Dilip Bheda
 Author URI: https://profiles.wordpress.org/dilipbheda
-Contributors: dilipbheda
+Contributors: dilipbheda, jigar-bhanushali
 Tags: blocks, faq, gutenberg faq, editor, faq block
 Requires at least: 5.0
 Tested up to: 5.2.3
@@ -41,7 +41,7 @@ After installing FAQ block for Gutenberg you need to go to page or post section 
 
 == Changelog ==
 = 2.0 =
-* Merger JS and CSS.
+* Merge JS and CSS.
 * Compatible with Google schema.
 
 = 1.4 =
