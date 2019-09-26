@@ -36,6 +36,8 @@ After installing FAQ block for Gutenberg you need to go to page or post section 
 
 = How to disable Schema JSON-LD =
 
+Take, for example, the following line of code:
+
 `add_filter( 'fbfg_json_ld_output', '__return_false' );`
 
 
