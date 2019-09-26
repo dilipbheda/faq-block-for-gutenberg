@@ -1,0 +1,1 @@
+<?php // Slicense is golden.
