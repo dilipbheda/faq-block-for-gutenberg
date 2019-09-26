@@ -130,7 +130,7 @@ if ( ! class_exists( 'Faq_Block_For_Gutenberg' ) ) {
 		 * @return string Filter html.
 		 */
 		public function gutenberg_faq_block_strip_tags( $html = '' ) {
-			return strip_tags( $html, apply_filters( 'fbfg_schema_allow_tags', '<h1><h2><h3><h4><h5><h6><br><ol><ul><li><a><p><b><strong><i><em>' ) );
+			return strip_tags( $html, apply_filters( 'fbfg_schema_allow_html_tags', '<h1><h2><h3><h4><h5><h6><br><ol><ul><li><a><p><b><strong><i><em>' ) );
 		}
 	}
 }

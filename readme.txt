@@ -34,6 +34,11 @@ From directories, Upload `FAQ Block For Gutenberg` to the `/wp-content/plugins/`
 
 After installing FAQ block for Gutenberg you need to go to page or post section where you can see the Gutenberg editor and click on add block. Select FAQ block and add your question and answer. You will also be able to give the styling to FAQs.
 
+= How to disable Schema JSON-LD =
+
+`add_filter( 'fbfg_json_ld_output', '__return_false' );`
+
+
 == Changelog ==
 = 2.0 =
 * Merger JS and CSS.
