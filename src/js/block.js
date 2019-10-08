@@ -17,11 +17,11 @@
 	 /**
 	  * Editable block
 	  */
-	  var Editable = wp.editor.RichText;
+	  var Editable = wp.blockEditor.RichText;
 	 /**
 	  * InspectorControls
 	  */
-	  var InspectorControls = wp.editor.InspectorControls;
+	  var InspectorControls = wp.blockEditor.InspectorControls;
 
 	 /**
 	  * PanelColor
@@ -30,15 +30,15 @@
 	 /**
 	  * ColorPalette
 	  */
-	  var ColorPalette = wp.editor.ColorPalette;
+	  var ColorPalette = wp.blockEditor.ColorPalette;
 	 /**
 	  * BlockControls
 	  */
-	  var BlockControls = wp.editor.BlockControls;
+	  var BlockControls = wp.blockEditor.BlockControls;
 	 /**
 	  * BlockControls
 	  */
-	  var AlignmentToolbar = wp.editor.AlignmentToolbar;
+	  var AlignmentToolbar = wp.blockEditor.AlignmentToolbar;
 
 	/**
 	 * Every block starts by registering a new block type definition.
@@ -113,23 +113,23 @@
 		var onFocusAnswer = function ( focus ) {
 			props.setFocus( _.extend( {}, focus, { editable: 'answer' } ) );
 		};
-        
-        var ShowAnswer = function ( event ) {
-        	var NextDiv = event.target.parentNode.parentNode.parentNode.parentNode.nextSibling;
-        	if ( NextDiv != null ) {
-        		var ClassList =  NextDiv.classList;
-        		if ( ClassList.contains( 'editor-rich-text' ) ) {
-        			if ( ClassList.contains( 'edit-answer' ) ) {
-        				ClassList.remove( 'edit-answer' );
-        				event.target.classList.remove( 'active' );
-        			} else {
-        				ClassList.add( 'edit-answer' );
-        				event.target.classList.add( 'active' );
-        			}
-        		}
-        	}
-        };
-        
+		
+		var ShowAnswer = function ( event ) {
+			var NextDiv = event.target.parentNode.nextSibling;
+			if ( NextDiv != null ) {
+				var ClassList =  NextDiv.classList;
+				if ( ClassList.contains( 'editor-rich-text' ) ) {
+					if ( ClassList.contains( 'edit-answer' ) ) {
+						ClassList.remove( 'edit-answer' );
+						event.target.classList.remove( 'active' );
+					} else {
+						ClassList.add( 'edit-answer' );
+						event.target.classList.add( 'active' );
+					}
+				}
+			}
+		};
+		
 		return el(
 			'div',
 			null,
