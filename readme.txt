@@ -6,7 +6,7 @@ Author URI: https://profiles.wordpress.org/dilipbheda
 Contributors: dilipbheda, jigar-bhanushali
 Tags: blocks, faq, gutenberg faq, editor, faq block
 Requires at least: 5.0
-Tested up to: 5.2.3
+Tested up to: 5.3
 Requires PHP: 5.6.3
 Stable tag: 2.1
 License: GPLv3 or later

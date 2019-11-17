@@ -81,9 +81,6 @@
 		},
 
 		edit: function ( props ) {
-			var attrs = $.extend( {
-				background: '',
-			}, props.attributes );
 			var focusedEditable = props.focus ? props.focus.editable || 'question' : null;
 			var attributes = props.attributes;
 			var alignment = props.attributes.alignment;
@@ -115,10 +112,10 @@
 		};
 		
 		var ShowAnswer = function ( event ) {
-			var NextDiv = event.target.parentNode.nextSibling;
+			var NextDiv = event.target.parentNode.parentNode.parentNode.parentNode.nextSibling || event.target.parentNode.nextSibling;
 			if ( NextDiv != null ) {
-				var ClassList =  NextDiv.classList;
-				if ( ClassList.contains( 'editor-rich-text' ) ) {
+				var ClassList =  NextDiv.classList || [];
+				if ( ClassList.length > 0 && ClassList.contains( 'editor-rich-text' ) ) {
 					if ( ClassList.contains( 'edit-answer' ) ) {
 						ClassList.remove( 'edit-answer' );
 						event.target.classList.remove( 'active' );
