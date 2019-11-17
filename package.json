@@ -1,6 +1,6 @@
 {
   "name": "faq-block-for-gutenberg",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "FAQ blocks for Gutenberg provide a block for the new Gutenberg editor in WordPress which allows you to add FAQs with basic styling options. This plugin allows you to add multiple FAQs.",
   "main": "webpack.config.js",
   "scripts": {

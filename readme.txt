@@ -6,9 +6,9 @@ Author URI: https://profiles.wordpress.org/dilipbheda
 Contributors: dilipbheda, jigar-bhanushali
 Tags: blocks, faq, gutenberg faq, editor, faq block
 Requires at least: 5.0
-Tested up to: 5.2.3
+Tested up to: 5.3
 Requires PHP: 5.6.3
-Stable tag: 2.0
+Stable tag: 2.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -36,10 +36,15 @@ After installing FAQ block for Gutenberg you need to go to page or post section 
 
 = How to disable Schema JSON-LD =
 
+Take, for example, the following line of code:
+
 `add_filter( 'fbfg_json_ld_output', '__return_false' );`
 
 
 == Changelog ==
+= 2.1 =
+* Fixed block deprecated issue.
+
 = 2.0 =
 * Merge JS and CSS.
 * Compatible with Google schema.
