@@ -8,7 +8,7 @@ Tags: blocks, faq, gutenberg faq, editor, faq block
 Requires at least: 5.0
 Tested up to: 5.3
 Requires PHP: 5.6.3
-Stable tag: 2.1
+Stable tag: 2.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -42,6 +42,9 @@ Take, for example, the following line of code:
 
 
 == Changelog ==
+= 2.2 =
+* Added javaScript i18n support.
+
 = 2.1 =
 * Fixed block deprecated issue.
 

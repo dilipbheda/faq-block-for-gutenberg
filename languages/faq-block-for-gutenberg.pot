@@ -1,0 +1,63 @@
+# Copyright (C) 2019 Dilip Bheda
+# This file is distributed under the same license as the FAQ Block For Gutenberg plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: FAQ Block For Gutenberg 2.2\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/faq-block-for-gutenberg\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2019-11-19T21:45:01+05:30\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.3.0\n"
+"X-Domain: faq-block-for-gutenberg\n"
+
+#. Plugin Name of the plugin
+msgid "FAQ Block For Gutenberg"
+msgstr ""
+
+#. Description of the plugin
+msgid "This plugin provides a quick and easy way to add FAQ's block using Gutenberg visual editor."
+msgstr ""
+
+#. Author of the plugin
+msgid "Dilip Bheda"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "http://profiles.wordpress.org/dilipbheda"
+msgstr ""
+
+#: assets/js/block.build.js:1
+msgid "FAQ"
+msgstr ""
+
+#: assets/js/block.build.js:1
+msgid "Background color"
+msgstr ""
+
+#: assets/js/block.build.js:1
+msgid "Question Font Color"
+msgstr ""
+
+#: assets/js/block.build.js:1
+msgid "Question Background"
+msgstr ""
+
+#: assets/js/block.build.js:1
+msgid "Answer Font Color"
+msgstr ""
+
+#: assets/js/block.build.js:1
+msgid "Answer Background"
+msgstr ""
+
+#: assets/js/block.build.js:1
+msgid "Question:"
+msgstr ""
+
+#: assets/js/block.build.js:1
+msgid "Answer:"
+msgstr ""
