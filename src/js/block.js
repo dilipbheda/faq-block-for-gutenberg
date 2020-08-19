@@ -107,16 +107,24 @@
 		};
 		
 		var ShowAnswer = function ( event ) {
-			var NextDiv = event.target.parentNode.parentNode.parentNode.parentNode.nextSibling || event.target.parentNode.nextSibling;
+			var NextDiv = event.target.closest( '.wp-block-faq-block-for-gutenberg-faq' ).querySelector( '.answer' );
+			if ( event.target.parentNode.parentNode.classList.length > 0 && ! event.target.parentNode.parentNode.classList.contains( 'question' ) ) {	
+				NextDiv = null;
+			}
+			if ( NextDiv != null ) {
+				if ( event.target.classList.length > 0 && ! event.target.classList.contains( 'question' ) ) {
+					NextDiv = null;
+				}
+			}
 			if ( NextDiv != null ) {
 				var ClassList =  NextDiv.classList || [];
-				if ( ClassList.length > 0 && ClassList.contains( 'editor-rich-text' ) ) {
+				if ( ( ClassList.length > 0 ) && ( ClassList.contains( 'editor-rich-text' ) || ClassList.contains( 'block-editor-rich-text__editable' ) ) ) {
 					if ( ClassList.contains( 'edit-answer' ) ) {
 						ClassList.remove( 'edit-answer' );
-						event.target.classList.remove( 'active' );
+						event.target.closest( '.question' ).classList.remove( 'active' );
 					} else {
 						ClassList.add( 'edit-answer' );
-						event.target.classList.add( 'active' );
+						event.target.closest( '.question' ).classList.add( 'active' );
 					}
 				}
 			}
