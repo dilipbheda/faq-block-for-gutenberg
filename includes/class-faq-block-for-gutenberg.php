@@ -25,6 +25,8 @@ if ( ! class_exists( 'Faq_Block_For_Gutenberg' ) ) {
 		public function gutenberg_faq_block_register() {
 			// Register script.
 			wp_register_script( 'gutenberg-faq-block', plugin_dir_url( __FILE__ ) . '../assets/js/block.build.js', array( 'wp-blocks', 'wp-i18n', 'wp-element' ), '', true );
+			// Added wp i18n support.
+			wp_set_script_translations( 'gutenberg-faq-block', 'faq-block-for-gutenberg' );
 			// Register style.
 			wp_register_style( 'gutenberg-faq-block-style', plugin_dir_url( __FILE__ ) . '../assets/css/style.css' );
 			// Register block.

@@ -9,11 +9,6 @@
 	 * @see https://github.com/WordPress/gutenberg/tree/master/element#element
 	 */
 	 var el = wp.element.createElement;
-	/**
-	 * Retrieves the translation of text.
-	 * @see https://github.com/WordPress/gutenberg/tree/master/i18n#api
-	 */
-	 var __ = wp.i18n.__;
 	 /**
 	  * Editable block
 	  */
@@ -46,7 +41,7 @@
 	 */
 	// Register guternber block.
 	registerBlockType('faq-block-for-gutenberg/faq', {
-		title: __( 'FAQ', 'faq-block-for-gutenberg' ),
+		title: wp.i18n.__( 'FAQ', 'faq-block-for-gutenberg' ),
 		icon: 'index-card',
 		category: 'layout',
 		attributes: {
@@ -112,16 +107,24 @@
 		};
 		
 		var ShowAnswer = function ( event ) {
-			var NextDiv = event.target.parentNode.parentNode.parentNode.parentNode.nextSibling || event.target.parentNode.nextSibling;
+			var NextDiv = event.target.closest( '.wp-block-faq-block-for-gutenberg-faq' ).querySelector( '.answer' );
+			if ( event.target.parentNode.parentNode.classList.length > 0 && ! event.target.parentNode.parentNode.classList.contains( 'question' ) ) {	
+				NextDiv = null;
+			}
+			if ( NextDiv != null ) {
+				if ( event.target.classList.length > 0 && ! event.target.classList.contains( 'question' ) ) {
+					NextDiv = null;
+				}
+			}
 			if ( NextDiv != null ) {
 				var ClassList =  NextDiv.classList || [];
-				if ( ClassList.length > 0 && ClassList.contains( 'editor-rich-text' ) ) {
+				if ( ( ClassList.length > 0 ) && ( ClassList.contains( 'editor-rich-text' ) || ClassList.contains( 'block-editor-rich-text__editable' ) ) ) {
 					if ( ClassList.contains( 'edit-answer' ) ) {
 						ClassList.remove( 'edit-answer' );
-						event.target.classList.remove( 'active' );
+						event.target.closest( '.question' ).classList.remove( 'active' );
 					} else {
 						ClassList.add( 'edit-answer' );
-						event.target.classList.add( 'active' );
+						event.target.closest( '.question' ).classList.add( 'active' );
 					}
 				}
 			}
@@ -146,7 +149,7 @@
 				InspectorControls,
 				{ key: 'inspector' },
 				el( PanelColor, 
-					{ title: __( 'Background color', 'faq-block-for-gutenberg' ), initialOpen: true }, 
+					{ title: wp.i18n.__( 'Background color', 'faq-block-for-gutenberg' ), initialOpen: true }, 
 					el( ColorPalette, 
 					{
 						value: props.attributes.backgroundColor, 
@@ -157,7 +160,7 @@
 					)
 					),
 				el( PanelColor, 
-					{ title: __( 'Question Font Color', 'faq-block-for-gutenberg' ), initialOpen: false }, 
+					{ title: wp.i18n.__( 'Question Font Color', 'faq-block-for-gutenberg' ), initialOpen: false }, 
 					el( ColorPalette, 
 					{
 						value: props.attributes.questionText, 
@@ -169,7 +172,7 @@
 					),
 					),
 				el( PanelColor, 
-					{ title: __( 'Question Background', 'faq-block-for-gutenberg' ), initialOpen: false }, 
+					{ title: wp.i18n.__( 'Question Background', 'faq-block-for-gutenberg' ), initialOpen: false }, 
 					el( ColorPalette,
 					{
 						value: props.attributes.questionBg, 
@@ -181,7 +184,7 @@
 					),
 					),
 				el( PanelColor, 
-					{ title: __( 'Answer Font Color', 'faq-block-for-gutenberg' ), initialOpen: false }, 
+					{ title: wp.i18n.__( 'Answer Font Color', 'faq-block-for-gutenberg' ), initialOpen: false }, 
 					el( ColorPalette, 
 					{
 						value: props.attributes.answerText, 
@@ -193,7 +196,7 @@
 					),
 					),
 				el( PanelColor, 
-					{ title: __( 'Answer Background', 'faq-block-for-gutenberg' ), initialOpen: false }, 
+					{ title: wp.i18n.__( 'Answer Background', 'faq-block-for-gutenberg' ), initialOpen: false }, 
 					el( ColorPalette,
 					{
 						value: props.attributes.answerBg, 
@@ -212,7 +215,7 @@
 				el(Editable, {
 					tagName: 'div',
 					className: 'question',
-					placeholder: __( 'Question:', 'faq-block-for-gutenberg' ),
+					placeholder: wp.i18n.__( 'Question:', 'faq-block-for-gutenberg' ),
 					value: attributes.question,
 					onChange: onChangeQuestion,
 					focus: focusedEditable === 'question',
@@ -222,7 +225,7 @@
 				el(Editable, {
 					tagName: 'div',
 					className: 'answer',
-					placeholder: __( 'Answer:', 'faq-block-for-gutenberg' ),
+					placeholder: wp.i18n.__( 'Answer:', 'faq-block-for-gutenberg' ),
 					value: attributes.answer,
 					onChange: onChangeAnswer,
 					focus: focusedEditable === 'answer',
