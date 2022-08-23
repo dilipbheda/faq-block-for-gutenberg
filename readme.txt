@@ -6,9 +6,9 @@ Author URI: https://profiles.wordpress.org/dilipbheda
 Contributors: dilipbheda, jigar-bhanushali
 Tags: blocks, faq, gutenberg faq, editor, faq block
 Requires at least: 5.0
-Tested up to: 5.9
+Tested up to: 6.0
 Requires PHP: 5.6.3
-Stable tag: 2.3
+Stable tag: 2.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -42,7 +42,10 @@ Take, for example, the following line of code:
 
 
 == Changelog ==
-= 2.2 =
+= 2.4 =
+* Bug Fixed ( https://wordpress.org/support/topic/php-warning-366/ )
+
+= 2.3 =
 * Compatible with WordPress 5.5
 
 = 2.2 =
