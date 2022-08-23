@@ -115,11 +115,13 @@ if ( ! class_exists( 'Faq_Block_For_Gutenberg' ) ) {
 		 */
 		private function gutenberg_faq_block_parse_blocks() {
 			global $post;
-			$blocks = parse_blocks( $post->post_content );
 			$block_data = array();
-			foreach ( $blocks as $block ) {
-				if ( 'faq-block-for-gutenberg/faq' === $block['blockName'] ) {
-					$block_data[] = $block;
+			if ( $post ) {
+				$blocks = parse_blocks( $post->post_content );
+				foreach ( $blocks as $block ) {
+					if ( 'faq-block-for-gutenberg/faq' === $block['blockName'] ) {
+						$block_data[] = $block;
+					}
 				}
 			}
 			return $block_data;
