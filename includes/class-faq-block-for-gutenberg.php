@@ -24,11 +24,11 @@ if ( ! class_exists( 'Faq_Block_For_Gutenberg' ) ) {
 		 */
 		public function gutenberg_faq_block_register() {
 			// Register script.
-			wp_register_script( 'gutenberg-faq-block', plugin_dir_url( __FILE__ ) . '../assets/js/block.build.js', array( 'wp-blocks', 'wp-i18n', 'wp-element' ), '', true );
+			wp_register_script( 'gutenberg-faq-block', plugin_dir_url( __FILE__ ) . '../assets/js/block.build.js', array( 'wp-i18n', 'wp-blocks', 'wp-components', 'wp-compose', 'wp-editor', 'wp-api', 'lodash', 'wp-hooks' ), true, true );
 			// Added wp i18n support.
 			wp_set_script_translations( 'gutenberg-faq-block', 'faq-block-for-gutenberg' );
 			// Register style.
-			wp_register_style( 'gutenberg-faq-block-style', plugin_dir_url( __FILE__ ) . '../assets/css/style.css' );
+			wp_register_style( 'gutenberg-faq-block-style', plugin_dir_url( __FILE__ ) . '../assets/css/style.css', array(), true );
 			// Register block.
 			register_block_type(
 				'faq-block-for-gutenberg/faq',
@@ -117,7 +117,7 @@ if ( ! class_exists( 'Faq_Block_For_Gutenberg' ) ) {
 			global $post;
 			$block_data = array();
 			if ( $post ) {
-				$blocks = parse_blocks( $post->post_content );
+				$blocks = isset( $post->post_content ) ? parse_blocks( $post->post_content ) : array();
 				foreach ( $blocks as $block ) {
 					if ( 'faq-block-for-gutenberg/faq' === $block['blockName'] ) {
 						$block_data[] = $block;

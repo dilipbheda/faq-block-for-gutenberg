@@ -8,7 +8,7 @@
  * Author URI: http://profiles.wordpress.org/dilipbheda
  * Text Domain: faq-block-for-gutenberg
  * Domain Path: /languages
- * Version: 2.4
+ * Version: 2.5
  * License: GPLv3 or later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -16,13 +16,13 @@
  */
 
 // Include class file.
-require_once  plugin_dir_path( __FILE__ ) . '/includes/class-faq-block-for-gutenberg.php';
+require_once plugin_dir_path( __FILE__ ) . '/includes/class-faq-block-for-gutenberg.php';
 
 /**
  * Load textdomain.
  */
 function gutenberg_faq_block_textdomain() {
-	load_plugin_textdomain( 'faq-block-for-gutenberg', false, basename( dirname( __FILE__ ) ) . '/languages' );
+	load_plugin_textdomain( 'faq-block-for-gutenberg', false, basename( __DIR__ ) . '/languages' );
 }
 
 /**
@@ -45,6 +45,6 @@ register_deactivation_hook( __FILE__, 'gutenberg_faq_block_deactivation' );
  * Plugin init.
  */
 function gutenberg_faq_block_init() {
-	new Faq_Block_For_Gutenberg;
+	new Faq_Block_For_Gutenberg();
 }
 add_action( 'plugins_loaded', 'gutenberg_faq_block_init' );
