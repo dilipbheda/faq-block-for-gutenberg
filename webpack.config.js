@@ -2,45 +2,24 @@
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-// const BrowserSyncPlugin = require( 'browser-sync-webpack-plugin' );
+const FixStyleOnlyEntriesPlugin = require( 'webpack-fix-style-only-entries' );
 
 // Set different CSS extraction for editor only and common block styles
 const blockCSSPlugin = new MiniCssExtractPlugin({
-    filename: './assets/css/style.css',
+    filename: './css/style.css',
 });
-
-// Configuration for the ExtractTextPlugin.
-const extractConfig = {
-    use: [
-        {loader: 'raw-loader'},
-        {
-            loader: 'postcss-loader',
-            options: {
-                plugins: [require('autoprefixer')],
-            },
-        },
-        {
-            loader: 'sass-loader',
-            query: {
-                outputStyle:
-                    'production' === process.env.NODE_ENV ? 'compressed' : 'nested',
-            },
-        },
-    ],
-};
 
 module.exports = {
     externals: {
         'lodash': 'lodash'
     },
     entry: {
-        './assets/js/block.build': './src/js/block.js',
-        './assets/js/faq-block-for-gutenberg': './src/js/faq-block-for-gutenberg.js',
-        //'./assets/css/style': './src/css/style.scss',
+        'js/block.build': './src/js/block.js',
+        'js/faq-block-for-gutenberg': './src/js/faq-block-for-gutenberg.js',
+        'css/style': './src/css/style.scss',
     },
     output: {
-        path: path.resolve(__dirname),
-        filename: '[name].js',
+        path: path.resolve(__dirname, './assets')
     },
     watch: 'production' === process.env.NODE_ENV ? false : true,
     module: {
@@ -53,7 +32,7 @@ module.exports = {
                 },
             },
             {
-                test: /style\.s?css$/,
+                test: /\.s?css$/,
                 use: [ MiniCssExtractPlugin.loader,
                     {loader: 'css-loader'},
                     {
@@ -79,6 +58,7 @@ module.exports = {
         ],
     },
     plugins: [
-        blockCSSPlugin
+        blockCSSPlugin,
+        new FixStyleOnlyEntriesPlugin()
     ]
 };
