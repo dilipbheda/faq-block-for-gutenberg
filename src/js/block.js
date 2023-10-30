@@ -10,7 +10,6 @@
 	 * @see https://github.com/WordPress/gutenberg/tree/master/element#element
 	 */
 	const {
-		createElement: el,
 		useState
 	} = wp.element
 
@@ -18,6 +17,11 @@
 	 * WordPress dependencies
 	 */
 	const { __ } = wp.i18n;
+
+	const {
+		select,
+		dispatch
+	} = wp.data;
 
 	const {
 		RichText,
@@ -28,10 +32,27 @@
 		AlignmentToolbar
 	} = wp.blockEditor || wp.editor;
 
-	/**
-	  * PanelBody
-	  */
 	const { PanelBody } = wp.components;
+
+	/**
+	 * Clone FAQ block.
+	 */
+	const cloneSelectedBlocks = (e) => {
+		e.preventDefault();
+		const { duplicateBlocks } = dispatch('core/block-editor');
+		const block_ids = select('core/block-editor').getSelectedBlockClientIds();
+		duplicateBlocks(block_ids)
+	};
+
+	/**
+	 * Delete FAQ block.
+	 */
+	const deleteSelectedBlocks = (e) => {
+		e.preventDefault();
+		const { removeBlocks } = dispatch('core/block-editor');
+		const block_ids = select('core/block-editor').getSelectedBlockClientIds();
+		removeBlocks(block_ids);
+	};
 
 	/**
 	 * Every block starts by registering a new block type definition.
@@ -70,9 +91,8 @@
 			},
 			alignment: {
 				type: 'string',
-			},
+			}
 		},
-
 		edit: function ( props ) {
 			const [ focusedEditable, setfocusedEditable ] = useState(false);
 			const isSelected = useState(true);
@@ -180,6 +200,7 @@
 								<div className={props.className} key="editor" style={{ background: attributes.backgroundColor }} onClick={ShowAnswer}>
 									<RichText
 										{ ...blockProps }
+										allowedFormats={ [ 'core/bold', 'core/italic' ] }
 										key='question'
 										tagName='div'
 										className='question'
@@ -202,6 +223,10 @@
 										onFocus={ onFocusAnswer }
 										style={{ background: attributes.answerBg, color: attributes.answerText, textAlign: alignment }}
 									/>
+								</div>
+								<div className="faq-block-action-button">
+									<a href="" className="faq-block-action-clone" onClick={cloneSelectedBlocks}>{__( 'Click to clone', 'faq-block-for-gutenberg' )}</a>
+									<a href="" className="faq-block-action-remove" onClick={deleteSelectedBlocks}>{__( 'Remove', 'faq-block-for-gutenberg' )}</a>
 								</div>
 							</>
 						)
