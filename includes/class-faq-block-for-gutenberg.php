@@ -55,7 +55,7 @@ if ( ! class_exists( 'Faq_Block_For_Gutenberg' ) ) {
 		 */
 		public function gutenberg_faq_block_enqueue_script() {
 			// Enqueue public script.
-			wp_enqueue_script( 'gutenberg-faq-js', plugin_dir_url( __FILE__ ) . '../assets/js/faq-block-for-gutenberg.js', array( 'jquery' ), '', true );
+			wp_enqueue_script( 'gutenberg-faq-js', plugin_dir_url( __FILE__ ) . '../assets/js/faq-block-for-gutenberg.js', array( 'jquery' ), true, true );
 			// Enqueue faq style.
 			wp_enqueue_style( 'gutenberg-faq-block-style' );
 		}
@@ -67,8 +67,8 @@ if ( ! class_exists( 'Faq_Block_For_Gutenberg' ) ) {
 			$faq_parse_block = $this->gutenberg_faq_block_parse_blocks();
 			// Default schema data.
 			$faq_data = array(
-				'@context'	=> esc_url( 'https://schema.org' ),
-				'@type'		=> 'FAQPage',
+				'@context' => esc_url( 'https://schema.org' ),
+				'@type'    => 'FAQPage',
 			);
 			// If check faq parse block.
 			if ( $faq_parse_block ) {
@@ -77,18 +77,18 @@ if ( ! class_exists( 'Faq_Block_For_Gutenberg' ) ) {
 					$filter_faqs = $this->gutenberg_faq_block_strip_tags( $faqs['innerHTML'] );
 					if ( preg_match( '/<h4>(.*?)<\/h4>/s', $filter_faqs, $matches ) ) {
 						$faq_data['mainEntity'][] = array(
-							'@type'	=> 'Question',
-							'@id'		  => get_the_permalink() . '#' . uniqid(),
-							'name'	=> trim( wp_strip_all_tags( end( $matches ) ) ),
-							'answerCount' => 1,
-							'position'	  => $count,
-							'url'		  => get_the_permalink() . '#' . uniqid(),
+							'@type'          => 'Question',
+							'@id'            => get_the_permalink() . '#' . uniqid(),
+							'name'           => trim( wp_strip_all_tags( end( $matches ) ) ),
+							'answerCount'    => 1,
+							'position'       => $count,
+							'url'            => get_the_permalink() . '#' . uniqid(),
 							'acceptedAnswer' => array(
-								'@type'	=> 'Answer',
-								'text'	=> trim( str_replace( reset( $matches ), '', $filter_faqs ) ),
+								'@type' => 'Answer',
+								'text'  => trim( str_replace( reset( $matches ), '', $filter_faqs ) ),
 							),
 						);
-						$count++;
+						++$count;
 					}
 				}
 			}

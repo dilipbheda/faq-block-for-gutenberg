@@ -42,8 +42,12 @@ Take, for example, the following line of code:
 
 
 == Changelog ==
+
 = 2.5 =
-* Bug Fixed
+* Bug Fixed ( https://wordpress.org/support/topic/php-notice-232/, https://wordpress.org/support/topic/supprimer-les-majuscules-a-tous-les-mots/ )
+* Added clone and delete block action ( https://wordpress.org/support/topic/define-colors-site-wide/ )
+* Compatible with WordPress ^6.3 ( https://wordpress.org/support/topic/react-error-2/ )
+* Compatible with PHP ^8.0
 
 = 2.4 =
 * Bug Fixed ( https://wordpress.org/support/topic/php-warning-366/ )
