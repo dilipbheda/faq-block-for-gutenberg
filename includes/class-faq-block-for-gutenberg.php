@@ -24,17 +24,31 @@ if ( ! class_exists( 'Faq_Block_For_Gutenberg' ) ) {
 		 */
 		public function gutenberg_faq_block_register() {
 			// Register script.
-			wp_register_script( 'gutenberg-faq-block', plugin_dir_url( __FILE__ ) . '../assets/js/block.build.js', array( 'wp-blocks', 'wp-i18n', 'wp-element' ), '', true );
+			wp_register_script( 'gutenberg-faq-block', plugin_dir_url( __FILE__ ) . '../assets/js/block.build.js', array( 'wp-i18n', 'wp-blocks', 'wp-components', 'wp-compose', 'wp-editor', 'wp-api', 'lodash', 'wp-hooks' ), true, true );
 			// Added wp i18n support.
 			wp_set_script_translations( 'gutenberg-faq-block', 'faq-block-for-gutenberg' );
 			// Register style.
-			wp_register_style( 'gutenberg-faq-block-style', plugin_dir_url( __FILE__ ) . '../assets/css/style.css' );
+			wp_register_style( 'gutenberg-faq-block-style', plugin_dir_url( __FILE__ ) . '../assets/css/style.css', array(), true );
 			// Register block.
 			register_block_type(
 				'faq-block-for-gutenberg/faq',
 				array(
 					'editor_script' => 'gutenberg-faq-block',
 					'style'         => 'gutenberg-faq-block-style',
+				)
+			);
+			wp_localize_script(
+				'gutenberg-faq-block',
+				'faqBlockConfig',
+				apply_filters(
+					'fbfg_global_colors',
+					array(
+						'backgroundColor'         => '#f6f7f7',
+						'questionTextColor'       => '#000',
+						'questionBackgroundColor' => 'none',
+						'answerTextColor'         => '#000',
+						'answerBackgroundColor'   => 'none',
+					)
 				)
 			);
 			// Add support for Google schema.
@@ -55,7 +69,7 @@ if ( ! class_exists( 'Faq_Block_For_Gutenberg' ) ) {
 		 */
 		public function gutenberg_faq_block_enqueue_script() {
 			// Enqueue public script.
-			wp_enqueue_script( 'gutenberg-faq-js', plugin_dir_url( __FILE__ ) . '../assets/js/faq-block-for-gutenberg.js', array( 'jquery' ), '', true );
+			wp_enqueue_script( 'gutenberg-faq-js', plugin_dir_url( __FILE__ ) . '../assets/js/faq-block-for-gutenberg.js', array( 'jquery' ), true, true );
 			// Enqueue faq style.
 			wp_enqueue_style( 'gutenberg-faq-block-style' );
 		}
@@ -67,28 +81,28 @@ if ( ! class_exists( 'Faq_Block_For_Gutenberg' ) ) {
 			$faq_parse_block = $this->gutenberg_faq_block_parse_blocks();
 			// Default schema data.
 			$faq_data = array(
-				'@context'	=> esc_url( 'https://schema.org' ),
-				'@type'		=> 'FAQPage',
+				'@context' => esc_url( 'https://schema.org' ),
+				'@type'    => 'FAQPage',
 			);
 			// If check faq parse block.
 			if ( $faq_parse_block ) {
 				$count = 0;
 				foreach ( $faq_parse_block as $faqs ) {
 					$filter_faqs = $this->gutenberg_faq_block_strip_tags( $faqs['innerHTML'] );
-					if ( preg_match( '/<h4>(.*?)<\/h4>/s', $filter_faqs, $matches ) ) {
+					if ( preg_match( '/<h4(.*?)>(.*?)<\/h4>/s', $filter_faqs, $matches ) ) {
 						$faq_data['mainEntity'][] = array(
-							'@type'	=> 'Question',
-							'@id'		  => get_the_permalink() . '#' . uniqid(),
-							'name'	=> trim( wp_strip_all_tags( end( $matches ) ) ),
-							'answerCount' => 1,
-							'position'	  => $count,
-							'url'		  => get_the_permalink() . '#' . uniqid(),
+							'@type'          => 'Question',
+							'@id'            => get_the_permalink() . '#' . uniqid(),
+							'name'           => trim( wp_strip_all_tags( end( $matches ) ) ),
+							'answerCount'    => 1,
+							'position'       => $count,
+							'url'            => get_the_permalink() . '#' . uniqid(),
 							'acceptedAnswer' => array(
-								'@type'	=> 'Answer',
-								'text'	=> trim( str_replace( reset( $matches ), '', $filter_faqs ) ),
+								'@type' => 'Answer',
+								'text'  => trim( str_replace( reset( $matches ), '', $filter_faqs ) ),
 							),
 						);
-						$count++;
+						++$count;
 					}
 				}
 			}
@@ -117,7 +131,7 @@ if ( ! class_exists( 'Faq_Block_For_Gutenberg' ) ) {
 			global $post;
 			$block_data = array();
 			if ( $post ) {
-				$blocks = parse_blocks( $post->post_content );
+				$blocks = isset( $post->post_content ) ? parse_blocks( $post->post_content ) : array();
 				foreach ( $blocks as $block ) {
 					if ( 'faq-block-for-gutenberg/faq' === $block['blockName'] ) {
 						$block_data[] = $block;
