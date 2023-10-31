@@ -40,14 +40,37 @@ Take, for example, the following line of code:
 
 `add_filter( 'fbfg_json_ld_output', '__return_false' );`
 
+= Can I set global colors? =
+
+Yes, you can add it using this filter:
+
+`add_filter(
+	'fbfg_global_colors',
+	function ( $colors ) {
+		$colors = array(
+			'backgroundColor'         => '#f6f7f7',
+			'questionTextColor'       => '#000',
+			'questionBackgroundColor' => 'none',
+			'answerTextColor'         => '#000',
+			'answerBackgroundColor'   => 'none',
+		);
+		return $colors;
+	}
+);
+`
+== Screenshots ==
+1. FAQ block editor
+2. Advanced color settings
+3. FAQ preview
 
 == Changelog ==
 
 = 2.5 =
-* Bug Fixed ( https://wordpress.org/support/topic/php-notice-232/, https://wordpress.org/support/topic/supprimer-les-majuscules-a-tous-les-mots/ )
+* Bug Fixed ( https://wordpress.org/support/topic/php-notice-232/, https://wordpress.org/support/topic/supprimer-les-majuscules-a-tous-les-mots/, https://wordpress.org/support/topic/block-not-appearing-in-gutenberg-editor/ )
 * Added clone and delete block action ( https://wordpress.org/support/topic/define-colors-site-wide/ )
 * Compatible with WordPress ^6.3 ( https://wordpress.org/support/topic/react-error-2/ )
 * Compatible with PHP ^8.0
+* Added new filter for global colors - `fbfg_global_colors`
 
 = 2.4 =
 * Bug Fixed ( https://wordpress.org/support/topic/php-warning-366/ )

@@ -1,4 +1,4 @@
-( function( wp ) {
+( function( wp, options ) {
 	/**
 	 * Registers a new block provided a unique name and an object defining its behavior.
 	 * @see https://github.com/WordPress/gutenberg/tree/master/blocks#api
@@ -145,6 +145,22 @@
 				}
 			};
 
+			if ( ! props.attributes.backgroundColor ) {
+				props.setAttributes( { backgroundColor: options.backgroundColor } );
+			}
+			if ( ! props.attributes.questionText ) {
+				props.setAttributes( { questionText: options.questionTextColor } );
+			}
+			if ( ! props.attributes.questionBg ) {
+				props.setAttributes( { questionBg: options.questionBackgroundColor } );
+			}
+			if ( ! props.attributes.answerText ) {
+				props.setAttributes( { answerText: options.answerTextColor } );
+			}
+			if ( ! props.attributes.answerBg ) {
+				props.setAttributes( { answerBg: options.answerBackgroundColor } );
+			}
+
 			return(
 				<div { ...blockProps }>
 					{
@@ -258,4 +274,4 @@
 		);
 	}
 });
-}(window.wp));
+}(window.wp, window.faqBlockConfig || {}));

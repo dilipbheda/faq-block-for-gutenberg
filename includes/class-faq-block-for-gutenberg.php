@@ -37,6 +37,20 @@ if ( ! class_exists( 'Faq_Block_For_Gutenberg' ) ) {
 					'style'         => 'gutenberg-faq-block-style',
 				)
 			);
+			wp_localize_script(
+				'gutenberg-faq-block',
+				'faqBlockConfig',
+				apply_filters(
+					'fbfg_global_colors',
+					array(
+						'backgroundColor'         => '#f6f7f7',
+						'questionTextColor'       => '#000',
+						'questionBackgroundColor' => 'none',
+						'answerTextColor'         => '#000',
+						'answerBackgroundColor'   => 'none',
+					)
+				)
+			);
 			// Add support for Google schema.
 			if ( apply_filters( 'fbfg_json_ld_output', true ) ) {
 				add_action( 'wp_head', array( $this, 'gutenberg_faq_block_json_ld' ) );
