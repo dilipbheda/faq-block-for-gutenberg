@@ -1,39 +1,58 @@
-( function( wp ) {
+( function( wp, options ) {
 	/**
 	 * Registers a new block provided a unique name and an object defining its behavior.
 	 * @see https://github.com/WordPress/gutenberg/tree/master/blocks#api
 	 */
-	 var registerBlockType = wp.blocks.registerBlockType;
+	const { registerBlockType } = wp.blocks;
+
 	/**
 	 * Returns a new element of given type. Element is an abstraction layer atop React.
 	 * @see https://github.com/WordPress/gutenberg/tree/master/element#element
 	 */
-	 var el = wp.element.createElement;
-	 /**
-	  * Editable block
-	  */
-	  var Editable = wp.blockEditor.RichText;
-	 /**
-	  * InspectorControls
-	  */
-	  var InspectorControls = wp.blockEditor.InspectorControls;
+	const {
+		useState
+	} = wp.element
 
-	 /**
-	  * PanelColor
-	  */
-	  var PanelColor = wp.components.PanelBody;
-	 /**
-	  * ColorPalette
-	  */
-	  var ColorPalette = wp.blockEditor.ColorPalette;
-	 /**
-	  * BlockControls
-	  */
-	  var BlockControls = wp.blockEditor.BlockControls;
-	 /**
-	  * BlockControls
-	  */
-	  var AlignmentToolbar = wp.blockEditor.AlignmentToolbar;
+	/**
+	 * WordPress dependencies
+	 */
+	const { __ } = wp.i18n;
+
+	const {
+		select,
+		dispatch
+	} = wp.data;
+
+	const {
+		RichText,
+		useBlockProps,
+		InspectorControls,
+		ColorPalette,
+		BlockControls,
+		AlignmentToolbar
+	} = wp.blockEditor || wp.editor;
+
+	const { PanelBody } = wp.components;
+
+	/**
+	 * Clone FAQ block.
+	 */
+	const cloneSelectedBlocks = (e) => {
+		e.preventDefault();
+		const { duplicateBlocks } = dispatch('core/block-editor');
+		const block_ids = select('core/block-editor').getSelectedBlockClientIds();
+		duplicateBlocks(block_ids)
+	};
+
+	/**
+	 * Delete FAQ block.
+	 */
+	const deleteSelectedBlocks = (e) => {
+		e.preventDefault();
+		const { removeBlocks } = dispatch('core/block-editor');
+		const block_ids = select('core/block-editor').getSelectedBlockClientIds();
+		removeBlocks(block_ids);
+	};
 
 	/**
 	 * Every block starts by registering a new block type definition.
@@ -41,18 +60,18 @@
 	 */
 	// Register guternber block.
 	registerBlockType('faq-block-for-gutenberg/faq', {
-		title: wp.i18n.__( 'FAQ', 'faq-block-for-gutenberg' ),
+		title: __( 'FAQ', 'faq-block-for-gutenberg' ),
 		icon: 'index-card',
 		category: 'layout',
 		attributes: {
 			question: {
-				type: 'array',
-				source: 'children',
+				type: 'string',
+				source: 'html',
 				selector: 'h4'
 			},
 			answer: {
-				type: 'array',
-				source: 'children',
+				type: 'string',
+				source: 'html',
 				selector: '.answer'
 			},
 			backgroundColor: {
@@ -72,234 +91,187 @@
 			},
 			alignment: {
 				type: 'string',
-			},
+			}
 		},
-
 		edit: function ( props ) {
-			var focusedEditable = props.focus ? props.focus.editable || 'question' : null;
-			var attributes = props.attributes;
-			var alignment = props.attributes.alignment;
-			var isSelected = props.isSelected;
+			const [ focusedEditable, setfocusedEditable ] = useState(false);
+			const isSelected = useState(true);
+			const blockProps = useBlockProps();
+			const attributes = props.attributes;
+			const alignment = props.attributes.alignment;
 
-		// Block alignment control.
-		var onChangeAlignment = function ( newAlignment ) {
-			props.setAttributes( { alignment: newAlignment } );
-		};
+			// Block alignment control.
+			const onChangeAlignment = function ( newAlignment ) {
+				props.setAttributes( { alignment: newAlignment } );
+			};
 
-		// Question onchange. 
-		var onChangeQuestion = function ( value ) {
-			props.setAttributes( { question: value } );
-		};
+			// Question onchange. 
+			const onChangeQuestion = function ( value ) {
+				props.setAttributes( { question: value } );
+			};
 
-		// the function which handles what happens when focus is on the question
-		var onFocusQuestion = function ( focus ) {
-			props.setFocus( _.extend( {}, focus, { editable: 'question' } ) );
-		};
+			// the function which handles what happens when focus is on the question
+			const onFocusQuestion = function ( focus ) {
+				setfocusedEditable( 'question' );
+			};
 
-		// the function which handles what happens when the answer is changed
-		var onChangeAnswer = function ( value ) {
-			props.setAttributes( { answer: value } );
-		};
+			// the function which handles what happens when the answer is changed
+			const onChangeAnswer = function ( value ) {
+				props.setAttributes( { answer: value } );
+			};
 
-		// the function which handles what happens when focus is on the answer
-		var onFocusAnswer = function ( focus ) {
-			props.setFocus( _.extend( {}, focus, { editable: 'answer' } ) );
-		};
+			// the function which handles what happens when focus is on the answer
+			const onFocusAnswer = function ( focus ) {
+				setfocusedEditable( 'answer' );
+			};
 		
-		var ShowAnswer = function ( event ) {
-			var NextDiv = event.target.closest( '.wp-block-faq-block-for-gutenberg-faq' ).querySelector( '.answer' );
-			if ( event.target.parentNode.parentNode.classList.length > 0 && ! event.target.parentNode.parentNode.classList.contains( 'question' ) ) {	
-				NextDiv = null;
-			}
-			if ( NextDiv != null ) {
-				if ( event.target.classList.length > 0 && ! event.target.classList.contains( 'question' ) ) {
-					NextDiv = null;
+			const ShowAnswer = function ( event ) {
+				let FaqBlockElement = event.target.closest( '.question' );
+				if ( null === FaqBlockElement ) {
+					return;
 				}
-			}
-			if ( NextDiv != null ) {
-				var ClassList =  NextDiv.classList || [];
-				if ( ( ClassList.length > 0 ) && ( ClassList.contains( 'editor-rich-text' ) || ClassList.contains( 'block-editor-rich-text__editable' ) ) ) {
-					if ( ClassList.contains( 'edit-answer' ) ) {
-						ClassList.remove( 'edit-answer' );
-						event.target.closest( '.question' ).classList.remove( 'active' );
-					} else {
-						ClassList.add( 'edit-answer' );
-						event.target.closest( '.question' ).classList.add( 'active' );
+				let FaqAnswer = FaqBlockElement.parentNode.querySelector( '.answer' );
+				if ( FaqAnswer ) {
+					let ClassList =  FaqAnswer.classList || [];
+					if ( ( ClassList.length > 0 ) && ( ClassList.contains( 'editor-rich-text' ) || ClassList.contains( 'block-editor-rich-text__editable' ) ) ) {
+						if ( ClassList.contains( 'edit-answer' ) ) {
+							ClassList.remove( 'edit-answer' );
+							event.target.closest( '.question' ).classList.remove( 'active' );
+						} else {
+							ClassList.add( 'edit-answer' );
+							event.target.closest( '.question' ).classList.add( 'active' );
+						}
 					}
 				}
-			}
-		};
-		
-		return el(
-			'div',
-			null,
-			isSelected && el(
-				BlockControls,
-				{ key: 'controls' },
-				el(
-					AlignmentToolbar,
-					{
-						value: alignment,
-						onChange: onChangeAlignment
-					}
-					)
-				),
+			};
 
-			el(
-				InspectorControls,
-				{ key: 'inspector' },
-				el( PanelColor, 
-					{ title: wp.i18n.__( 'Background color', 'faq-block-for-gutenberg' ), initialOpen: true }, 
-					el( ColorPalette, 
+			if ( ! props.attributes.backgroundColor ) {
+				props.setAttributes( { backgroundColor: options.backgroundColor } );
+			}
+			if ( ! props.attributes.questionText ) {
+				props.setAttributes( { questionText: options.questionTextColor } );
+			}
+			if ( ! props.attributes.questionBg ) {
+				props.setAttributes( { questionBg: options.questionBackgroundColor } );
+			}
+			if ( ! props.attributes.answerText ) {
+				props.setAttributes( { answerText: options.answerTextColor } );
+			}
+			if ( ! props.attributes.answerBg ) {
+				props.setAttributes( { answerBg: options.answerBackgroundColor } );
+			}
+
+			return(
+				<div { ...blockProps }>
 					{
-						value: props.attributes.backgroundColor, 
-						onChange: function ( value ) {
-							props.setAttributes( { backgroundColor: value } );
-						}
+						isSelected && (
+							<>
+								<BlockControls key="controls">
+									<AlignmentToolbar
+										value={ alignment }
+										onChange={ onChangeAlignment }
+									/>
+								</BlockControls>
+
+								<InspectorControls key="inspector">
+									<PanelBody title={ __( 'Background color', 'faq-block-for-gutenberg' ) } initialOpen={true}>
+										<ColorPalette
+											value={ props.attributes.backgroundColor }
+											onChange={( value ) => props.setAttributes( { backgroundColor: value } )}
+										/>
+									</PanelBody>
+
+									<PanelBody title={ __( 'Question Font Color', 'faq-block-for-gutenberg' ) } initialOpen={false}>
+										<ColorPalette
+											colors={['#F00']}
+											value={ props.attributes.questionText }
+											onChange={( value ) => props.setAttributes( { questionText: value } )}
+										/>
+									</PanelBody>
+
+									<PanelBody title={ __( 'Question Background', 'faq-block-for-gutenberg' ) } initialOpen={false}>
+										<ColorPalette
+											colors={['#000']}
+											value={ props.attributes.questionBg }
+											onChange={( value ) => props.setAttributes( { questionBg: value } )}
+										/>
+									</PanelBody>
+
+									<PanelBody title={ __( 'Answer Font Color', 'faq-block-for-gutenberg' ) } initialOpen={false}>
+										<ColorPalette
+											colors={['#F00']}
+											value={ props.attributes.answerText }
+											onChange={( value ) => props.setAttributes( { answerText: value } )}
+										/>
+									</PanelBody>
+
+									<PanelBody title={ __( 'Answer Background', 'faq-block-for-gutenberg' ) } initialOpen={false}>
+										<ColorPalette
+											colors={['#000']}
+											value={ props.attributes.answerBg }
+											onChange={( value ) => props.setAttributes( { answerBg: value } )}
+										/>
+									</PanelBody>
+								</InspectorControls>
+								<div className={props.className} key="editor" style={{ background: attributes.backgroundColor }} onClick={ShowAnswer}>
+									<RichText
+										{ ...blockProps }
+										allowedFormats={ [ 'core/bold', 'core/italic' ] }
+										key='question'
+										tagName='div'
+										className='question'
+										placeholder={ __( 'Question:', 'faq-block-for-gutenberg' ) }
+										value={ attributes.question }
+										onChange={ onChangeQuestion }
+										focus={ focusedEditable === 'question' }
+										onFocus={onFocusQuestion}
+										style={{ background: attributes.questionBg, color: attributes.questionText, textAlign: alignment }}
+									/>
+									<RichText
+										{ ...blockProps }
+										key='answer'
+										tagName='div'
+										className='answer'
+										placeholder= { __( 'Answer:', 'faq-block-for-gutenberg' ) }
+										value={ attributes.answer }
+										onChange={ onChangeAnswer }
+										focus={ focusedEditable === 'answer' }
+										onFocus={ onFocusAnswer }
+										style={{ background: attributes.answerBg, color: attributes.answerText, textAlign: alignment }}
+									/>
+								</div>
+								<div className="faq-block-action-button">
+									<a href="" className="faq-block-action-clone" onClick={cloneSelectedBlocks}>{__( 'Click to clone', 'faq-block-for-gutenberg' )}</a>
+									<a href="" className="faq-block-action-remove" onClick={deleteSelectedBlocks}>{__( 'Remove', 'faq-block-for-gutenberg' )}</a>
+								</div>
+							</>
+						)
 					}
-					)
-					),
-				el( PanelColor, 
-					{ title: wp.i18n.__( 'Question Font Color', 'faq-block-for-gutenberg' ), initialOpen: false }, 
-					el( ColorPalette, 
-					{
-						value: props.attributes.questionText, 
-						colors: ['#F00'], 
-						onChange: function ( value ) {
-							props.setAttributes( { questionText: value } );
-						}
-					}
-					),
-					),
-				el( PanelColor, 
-					{ title: wp.i18n.__( 'Question Background', 'faq-block-for-gutenberg' ), initialOpen: false }, 
-					el( ColorPalette,
-					{
-						value: props.attributes.questionBg, 
-						colors: ['#000'], 
-						onChange: function ( value ) {
-							props.setAttributes( { questionBg: value } );
-						}
-					}
-					),
-					),
-				el( PanelColor, 
-					{ title: wp.i18n.__( 'Answer Font Color', 'faq-block-for-gutenberg' ), initialOpen: false }, 
-					el( ColorPalette, 
-					{
-						value: props.attributes.answerText, 
-						colors: ['#F00'], 
-						onChange: function ( value ) {
-							props.setAttributes( { answerText: value } );
-						}
-					}
-					),
-					),
-				el( PanelColor, 
-					{ title: wp.i18n.__( 'Answer Background', 'faq-block-for-gutenberg' ), initialOpen: false }, 
-					el( ColorPalette,
-					{
-						value: props.attributes.answerBg, 
-						colors: ['#000'], 
-						onChange: function ( value ) {
-							props.setAttributes( { answerBg: value } );
-						}
-					}
-					),
-					),
-				el( 'hr', null ),
-				),
-			el(
-				'div',
-				{ className: props.className, key: 'editor', style:{ background: attributes.backgroundColor }, onClick: ShowAnswer },
-				el(Editable, {
-					tagName: 'div',
-					className: 'question',
-					placeholder: wp.i18n.__( 'Question:', 'faq-block-for-gutenberg' ),
-					value: attributes.question,
-					onChange: onChangeQuestion,
-					focus: focusedEditable === 'question',
-					onFocus: onFocusQuestion,
-					style: { background: attributes.questionBg, color: attributes.questionText, textAlign: alignment }
-				}),
-				el(Editable, {
-					tagName: 'div',
-					className: 'answer',
-					placeholder: wp.i18n.__( 'Answer:', 'faq-block-for-gutenberg' ),
-					value: attributes.answer,
-					onChange: onChangeAnswer,
-					focus: focusedEditable === 'answer',
-					onFocus: onFocusAnswer,
-					style: { background: attributes.answerBg, color: attributes.answerText, textAlign: alignment }
-				}),
-				)
+				</div>
 			);
 	},
 	save: function save(props) {
-		/**
-		 * Get classname
-		 */
-		 var className = props.className;
-		/**
-		 * Get Quesion
-		 */
-		 var question = props.attributes.question;
-		/**
-		 * Get Answer 
-		 */
-		 var answer = props.attributes.answer;
-		/**
-		 * Get ID
-		 */
-		 var id = props.attributes.id;
-		/**
-		 * Get background color
-		 */
-		 var backgroundColor = props.attributes.backgroundColor;
-		/**
-		 * Get Question
-		 */
-		 var questionText = props.attributes.questionText;
-		/**
-		 * Get Question background
-		 */
-		 var questionBg = props.attributes.questionBg;
-		/**
-		 * Get answer
-		 */
-		 var answerText = props.attributes.answerText;
-		/**
-		 * Alignment
-		 */
-		 var alignment = props.attributes.alignment;
-		/**
-		 * Background
-		 */
-		 var answerBg = props.attributes.answerBg;
-		// Return content
-		return el(
-			'div',
-			{ className: className, 'data-id': id, style:{ background: backgroundColor } },
-			el(
-				'div',
-				{ className: 'question', style:{ background: questionBg, textAlign:alignment, color: questionText } },
-				el(
-					'h4',
-					{
-						style:{ color: questionText }
-					},
-					null,
-					question
-					)
-				),
-			el(
-				'div',
-				{ className: 'answer', style:{ background: answerBg, color: answerText, textAlign:alignment } },
-				answer
-				)
-			);
+		const className = props;
+		const {
+			id,
+			question,
+			answer,
+			backgroundColor,
+			questionText,
+			questionBg,
+			answerText,
+			alignment,
+			answerBg
+		} = props.attributes;
+
+		return(
+			<div className={className} data-id={id} style={{ background: backgroundColor }}>
+				<div className="question" style={{ background: questionBg, textAlign:alignment, color: questionText }}>
+					<h4 style={{ color: questionText }} dangerouslySetInnerHTML={{ __html: question }}></h4>
+				</div>
+				<div className="answer" style={{ background: answerBg, color: answerText, textAlign:alignment }} dangerouslySetInnerHTML={{ __html: answer }}></div>
+			</div>
+		);
 	}
 });
-} )(
-window.wp
-);
+}(window.wp, window.faqBlockConfig || {}));

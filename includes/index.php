@@ -1,1 +1,1 @@
-<?php // Slicense is golden.
+<?php // phpcs:disable Slicense is golden.
