@@ -89,7 +89,7 @@ if ( ! class_exists( 'Faq_Block_For_Gutenberg' ) ) {
 				$count = 0;
 				foreach ( $faq_parse_block as $faqs ) {
 					$filter_faqs = $this->gutenberg_faq_block_strip_tags( $faqs['innerHTML'] );
-					if ( preg_match( '/<h4>(.*?)<\/h4>/s', $filter_faqs, $matches ) ) {
+					if ( preg_match( '/<h4(.*?)>(.*?)<\/h4>/s', $filter_faqs, $matches ) ) {
 						$faq_data['mainEntity'][] = array(
 							'@type'          => 'Question',
 							'@id'            => get_the_permalink() . '#' . uniqid(),
