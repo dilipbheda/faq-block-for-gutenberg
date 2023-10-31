@@ -63,6 +63,11 @@ Yes, you can add it using this filter:
 2. Advanced color settings
 3. FAQ preview
 
+== Upgrade Notice ==
+
+= 2.5 =
+Important Upgrade Notice: It is recommended to re-save your FAQ block to reflect new changes on the front end as well.
+
 == Changelog ==
 
 = 2.5 =
