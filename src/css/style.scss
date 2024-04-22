@@ -27,10 +27,15 @@
 	}
 	.answer {
 		display: none;
+      	transition-delay: 0s;
 	}
 	.active {
 		&:before {
 			content: '\2212' !important;
+		}
+		+ .answer {
+			display: block;
+	      	transition: visibility 0s linear 0.33s, opacity 0.33s linear;
 		}
 	}
 }

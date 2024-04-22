@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "wp-scripts start --mode=development",
     "build": "wp-scripts lint-js ./src/js/block.js && wp-scripts build --mode=production --config=webpack.config.js",
-    "lint:js": "wp-scripts lint-js ./src/js/block.js"
+    "lint:js": "wp-scripts lint-js ./src/js/block.js",
+    "dist": "bash bin/dist.sh"
   },
   "author": "Dilip Bheda",
   "license": "GPL-3.0",
