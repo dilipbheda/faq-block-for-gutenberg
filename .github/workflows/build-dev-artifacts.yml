@@ -21,6 +21,10 @@ jobs:
     steps:
       - name: Check out source files
         uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.15.0
       - name: Install Dependencies
         run: npm install
       - name: Build zip
