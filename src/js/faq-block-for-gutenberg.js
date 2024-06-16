@@ -1,8 +1,11 @@
-jQuery( document ).ready( function( $ ) {
-  	//Question handler
-	$( 'div.question' ).on( 'click', function() {
-		var _this = $( this );
-		_this.hasClass( 'active' ) ? _this.removeClass( 'active' ) : _this.addClass( 'active' );
-		$( this ).next( 'div.answer' ).fadeToggle( 'slow', 'linear' );
-	} );
-} );
+document.addEventListener('DOMContentLoaded', function(event) {
+	var toggleSelector = document.querySelectorAll('div.question');
+	if ( toggleSelector ) {
+		toggleSelector.forEach(function(currentElement, index) {
+			currentElement.addEventListener('click', function() {
+				var _classList = this.classList;
+				this.classList.toggle('active');
+			});
+		});
+	}
+});

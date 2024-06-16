@@ -34,7 +34,7 @@ if ( ! class_exists( 'Faq_Block_For_Gutenberg' ) ) {
 				'faq-block-for-gutenberg/faq',
 				array(
 					'editor_script' => 'gutenberg-faq-block',
-					'style'         => 'gutenberg-faq-block-style',
+					'editor_style'  => 'gutenberg-faq-block-style',
 				)
 			);
 			wp_localize_script(
@@ -68,10 +68,15 @@ if ( ! class_exists( 'Faq_Block_For_Gutenberg' ) ) {
 		 * Enqueue script & style.
 		 */
 		public function gutenberg_faq_block_enqueue_script() {
-			// Enqueue public script.
-			wp_enqueue_script( 'gutenberg-faq-js', plugin_dir_url( __FILE__ ) . '../assets/js/faq-block-for-gutenberg.js', array( 'jquery' ), true, true );
-			// Enqueue faq style.
-			wp_enqueue_style( 'gutenberg-faq-block-style' );
+			global $post;
+			if ( function_exists( 'has_block' ) && has_block( 'faq-block-for-gutenberg/faq', $post ) ) {
+				// Enqueue public script.
+				wp_register_script( 'gutenberg-faq', plugin_dir_url( __FILE__ ) . '../assets/js/faq-block-for-gutenberg.js', array(), true, true );
+				wp_enqueue_script( 'gutenberg-faq' );
+
+				// Enqueue faq style.
+				wp_enqueue_style( 'gutenberg-faq-block-style' );
+			}
 		}
 
 		/**
