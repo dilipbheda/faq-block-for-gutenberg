@@ -6,9 +6,9 @@ Author URI: https://profiles.wordpress.org/dilipbheda
 Contributors: dilipbheda, jigar-bhanushali
 Tags: blocks, faq, gutenberg faq, editor, faq block
 Requires at least: 5.0
-Tested up to: 6.5
+Tested up to: 6.7
 Requires PHP: 7.2
-Stable tag: 2.6
+Stable tag: 2.7
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -69,6 +69,9 @@ Yes, you can add it using this filter:
 Important Upgrade Notice: It is recommended to re-save your FAQ block to reflect new changes on the front end as well.
 
 == Changelog ==
+
+= 2.7 =
+* Resolve schema JSON issue with nested blocks - https://wordpress.org/support/topic/schema-json-not-working
 
 = 2.6 =
 * Remove jQuery dependency
