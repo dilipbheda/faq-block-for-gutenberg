@@ -130,16 +130,28 @@ if ( ! class_exists( 'Faq_Block_For_Gutenberg' ) ) {
 		/**
 		 * Parse blocks.
 		 *
+		 * @param array $blocks Blocks list.
+		 *
 		 * @return array FAQ block array.
 		 */
-		private function gutenberg_faq_block_parse_blocks() {
+		private function gutenberg_faq_block_parse_blocks( $blocks = array() ) {
 			global $post;
 			$block_data = array();
-			if ( $post ) {
+			if ( ! $post ) {
+				return $block_data;
+			}
+			if ( empty( $blocks ) ) {
 				$blocks = isset( $post->post_content ) ? parse_blocks( $post->post_content ) : array();
+			}
+			if ( ! empty( $blocks ) ) {
 				foreach ( $blocks as $block ) {
 					if ( 'faq-block-for-gutenberg/faq' === $block['blockName'] ) {
 						$block_data[] = $block;
+						continue;
+					}
+					// Search in nested blocks.
+					if ( ! empty( $block['innerBlocks'] ) ) {
+						$block_data = array_merge( $block_data, $this->gutenberg_faq_block_parse_blocks( $block['innerBlocks'] ) );
 					}
 				}
 			}
