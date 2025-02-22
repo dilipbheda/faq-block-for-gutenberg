@@ -130,6 +130,8 @@ if ( ! class_exists( 'Faq_Block_For_Gutenberg' ) ) {
 		/**
 		 * Parse blocks.
 		 *
+		 * @param array $blocks Blocks list.
+		 *
 		 * @return array FAQ block array.
 		 */
 		private function gutenberg_faq_block_parse_blocks( $blocks = array() ) {
