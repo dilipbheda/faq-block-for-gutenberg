@@ -1,25 +1,13 @@
 {
   "presets": [
-    [
-      "@babel/env",
-      {
-        "modules": false
-      }
-    ]
+    "@wordpress/babel-preset-default"
   ],
   "plugins": [
-    "@babel/plugin-proposal-object-rest-spread",
     [
-      "@babel/transform-react-jsx",
+      "@babel/plugin-transform-react-jsx",
       {
         "pragma": "wp.element.createElement"
       }
     ]
-  ],
-  "env": {
-    "default": {
-      "plugins": ["@babel/transform-runtime"]
-    }
-  }
+  ]
 }
-
